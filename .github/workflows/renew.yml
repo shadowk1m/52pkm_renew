@@ -19,3 +19,5 @@ jobs:
           CYPRESS_PASSWORD: ${{ secrets.PASSWORD }}
         with:
           start: npx cypress run
+          browser: chrome
+          record: true
