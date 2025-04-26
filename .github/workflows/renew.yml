@@ -20,4 +20,3 @@ jobs:
         with:
           start: npx cypress run
           browser: chrome
-          record: true
