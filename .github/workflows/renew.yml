@@ -13,5 +13,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: npm run build
+          build: npm ci
           start: CYPRESS_DOMAIN=${{ vars.DOMAIN }} CYPRESS_EMAILS=${{ vars.emails }} CYPRESS_COUPON=${{ vars.COUPON }} CYPRESS_PASSWORD=${{ secrets.PASSWORD }} npm start
