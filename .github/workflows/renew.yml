@@ -12,5 +12,10 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        env:
+          CYPRESS_DOMAIN: ${{ vars.DOMAIN }}
+          CYPRESS_EMAILS: ${{ vars.emails }}
+          CYPRESS_COUPON: ${{ vars.COUPON }}
+          CYPRESS_PASSWORD: ${{ secrets.PASSWORD }}
         with:
-          start: CYPRESS_DOMAIN=${{ vars.DOMAIN }} CYPRESS_EMAILS=${{ vars.emails }} CYPRESS_COUPON=${{ vars.COUPON }} CYPRESS_PASSWORD=${{ secrets.PASSWORD }} npx cypress run
+          start: npx cypress run
