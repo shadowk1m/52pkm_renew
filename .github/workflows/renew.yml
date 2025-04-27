@@ -17,5 +17,3 @@ jobs:
           CYPRESS_EMAILS: ${{ vars.emails }}
           CYPRESS_COUPON: ${{ vars.COUPON }}
           CYPRESS_PASSWORD: ${{ secrets.PASSWORD }}
-        with:
-          start: npx cypress run
