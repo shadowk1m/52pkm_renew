@@ -10,16 +10,29 @@
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add('login', (email, password) => { 
+Cypress.Commands.add('visitAndWait', (url, wait=500) => {
+    cy.visit(url)
+    cy.wait(wait)
+})
+Cypress.Commands.add('login', (email, password, wait=5000) => { 
     cy.get('#input-1').type(email)
     cy.get('#input-3').type(password)
     cy.get('button[type=submit]').click()
+    cy.wait(wait)
 })
-Cypress.Commands.add('clickIfExists', (selector) => {
+Cypress.Commands.add('clickIfExists', (selector, wait=2000) => {
     cy.get('body').then(($body) => {
-        if ($body.find(selector).length) {
+        if ($body.find(selector).length === 1) {
             cy.get(selector).click()
-            cy.wait(2000)
+            cy.wait(wait)
+        }
+    })
+})
+Cypress.Commands.add('typeIfExists', (selector, text, wait=2000) => {
+    cy.get('body').then(($body) => {
+        if ($body.find(selector).length === 1) {
+            cy.get(selector).type(text)
+            cy.wait(wait)
         }
     })
 })
