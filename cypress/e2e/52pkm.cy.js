@@ -21,27 +21,32 @@ describe('52pkm', () => {
 
 
   const emailList = emails.split(',')
-  it.each(emailList)('renew %s', async (email) => {
-    await cy.intercept(overrideUrl, { fixture: '52pkm.override.txt', headers: { 'Content-Type': 'application/javascript' } })
+  it.each(emailList)('renew %s', (email) => {
+    cy.intercept(overrideUrl, {
+      fixture: '52pkm.override.txt',
+      headers: {
+        'Content-Type': 'application/javascript'
+      }
+    })
 
-    await cy.visitAndWait(`${domain}/login`)
-    await cy.login(email, password)
+    cy.visitAndWait(`${domain}/login`)
+    cy.login(email, password)
+    
+    cy.clickIfExists('[style="z-index: 2420;"] > .v-overlay__content > .v-card > .v-card-actions > .text-grey > .v-btn__content')
+    cy.clickIfExists('.text-grey > .v-btn__content')
+    cy.clickIfExists('.v-card-actions > .v-btn')
+    cy.clickIfExists('.v-list > [href="/plan"]')
+    cy.clickIfExists(':nth-child(2) > .elevation-0 > .v-card > .v-card-text > .pa-6 > .v-btn', 3000)
+    cy.clickIfExists('.v-selection-control-group > .v-row > :nth-child(1) > .py-4')
+    cy.typeIfExists('.elevation-0 > .v-card-text input', coupon)
+    cy.clickIfExists('.v-card-actions > .d-flex > div > .v-btn > .v-btn__content')
 
-    await cy.clickIfExists('[style="z-index: 2420;"] > .v-overlay__content > .v-card > .v-card-actions > .text-grey > .v-btn__content')
-    await cy.clickIfExists('.text-grey > .v-btn__content')
-    await cy.clickIfExists('.v-card-actions > .v-btn')
-    await cy.clickIfExists('.v-list > [href="/plan"]')
-    await cy.clickIfExists(':nth-child(2) > .elevation-0 > .v-card > .v-card-text > .pa-6 > .v-btn', 3000)
-    await cy.clickIfExists('.v-selection-control-group > .v-row > :nth-child(1) > .py-4')
-    await cy.typeIfExists('.elevation-0 > .v-card-text input', coupon)
-    await cy.clickIfExists('.v-card-actions > .d-flex > div > .v-btn > .v-btn__content')
-
-    await cy.get('.v-alert__content').then(async ($alert) => {
+    cy.get('.v-alert__content').then(async ($alert) => {
       if ($alert.text().includes('成功')) {
-        await cy.log(`${email} coupon applied successfully`)
-        await cy.clickIfExists('.v-selection-control-group > .v-row > .v-col > .v-btn')
+        cy.log(`${email} coupon applied successfully`)
+        cy.clickIfExists('.v-selection-control-group > .v-row > .v-col > .v-btn')
       } else {
-        await cy.log(`${email} coupon applied unsuccessfully`)
+        cy.log(`${email} coupon applied unsuccessfully`)
       }
     })
   })
