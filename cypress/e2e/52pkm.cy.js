@@ -41,13 +41,7 @@ describe('52pkm', () => {
     cy.typeIfExists('.elevation-0 > .v-card-text input', coupon)
     cy.clickIfExists('.v-card-actions > .d-flex > div > .v-btn > .v-btn__content')
 
-    cy.get('.v-alert__content').then(async ($alert) => {
-      if ($alert.text().includes('成功')) {
-        cy.log(`${email} coupon applied successfully`)
-        cy.clickIfExists('.v-selection-control-group > .v-row > .v-col > .v-btn')
-      } else {
-        cy.log(`${email} coupon applied unsuccessfully`)
-      }
-    })
+    cy.get('.v-alert__content').eq(0).should('contain', '成功')
+    cy.clickIfExists('.v-selection-control-group > .v-row > .v-col > .v-btn', 5000)
   })
 })
