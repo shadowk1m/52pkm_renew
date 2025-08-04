@@ -1,5 +1,7 @@
 name: renew
 
+run-name: Coupon ${{ inputs.coupon }}
+
 on:
   workflow_dispatch:
     inputs:
