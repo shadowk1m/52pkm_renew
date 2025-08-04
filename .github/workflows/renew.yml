@@ -1,6 +1,11 @@
 name: renew
 
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+       coupon:
+         required: true
+         type: string
 
 jobs:
   cypress-run:
@@ -15,5 +20,5 @@ jobs:
         env:
           CYPRESS_DOMAIN: ${{ vars.DOMAIN }}
           CYPRESS_EMAILS: ${{ vars.emails }}
-          CYPRESS_COUPON: ${{ vars.COUPON }}
+          CYPRESS_COUPON: ${{ inputs.coupon }}
           CYPRESS_PASSWORD: ${{ secrets.PASSWORD }}
