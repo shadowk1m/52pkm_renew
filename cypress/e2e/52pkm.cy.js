@@ -32,9 +32,7 @@ describe('52pkm', () => {
     cy.visitAndWait(`${domain}/login`)
     cy.login(email, password)
     cy.visitAndWait(`${domain}/plan/8`)
-    cy.clickIfExists('.v-list > [href="/plan"]')
-    cy.clickIfExists(':nth-child(2) > .elevation-0 > .v-card > .v-card-text > .pa-6 > .v-btn')
-    cy.clickIfExists('.v-selection-control-group > .v-row > :nth-child(1) > .py-4')
+    cy.clickIfExists('.v-navigation-drawer__scrim')
     cy.typeIfExists('.elevation-0 > .v-card-text input', coupon)
     cy.clickIfExists('.v-card-actions > .d-flex > div > .v-btn > .v-btn__content')
 
