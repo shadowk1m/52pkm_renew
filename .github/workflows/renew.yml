@@ -24,3 +24,11 @@ jobs:
           CYPRESS_EMAILS: ${{ vars.emails }}
           CYPRESS_COUPON: ${{ inputs.coupon }}
           CYPRESS_PASSWORD: ${{ secrets.PASSWORD }}
+      - name: Upload screenshots on failure
+            uses: actions/upload-artifact@v4
+            # This condition ensures the step runs only if the 'cypress' step failed
+            if: ${{ failure() && steps.cypress.outcome == 'failure' }}
+            with:
+              name: cypress-screenshots
+              path: cypress/screenshots
+              if-no-files-found: ignore
