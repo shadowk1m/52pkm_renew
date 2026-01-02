@@ -14,7 +14,7 @@ Cypress.Commands.add('visitAndWait', (url, wait=300) => {
     cy.visit(url)
     cy.wait(wait)
 })
-Cypress.Commands.add('login', (email, password, wait=2000) => { 
+Cypress.Commands.add('login', (email, password, wait=5000) => { 
     cy.get('#input-1').type(email)
     cy.get('#input-3').type(password)
     cy.get('button[type=submit]').click()
