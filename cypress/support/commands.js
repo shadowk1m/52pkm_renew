@@ -14,7 +14,7 @@ Cypress.Commands.add('visitAndWait', (url, wait=300) => {
     cy.visit(url)
     cy.wait(wait)
 })
-Cypress.Commands.add('login', (email, password, wait=5000) => { 
+Cypress.Commands.add('login', (email, password, wait=2000) => { 
     cy.get('#input-1').type(email)
     cy.get('#input-3').type(password)
     cy.get('button[type=submit]').click()
@@ -35,6 +35,34 @@ Cypress.Commands.add('typeIfExists', (selector, text, wait=300) => {
             cy.wait(wait)
         }
     })
+})
+
+// Overwrite `visit` to inject small, non-invasive navigator/browser overrides
+// that can help reduce detection of automation during tests.
+Cypress.Commands.overwrite('visit', (originalFn, url, options = {}) => {
+    const userOnBeforeLoad = options.onBeforeLoad
+    options.onBeforeLoad = (win) => {
+        try {
+            Object.defineProperty(win.navigator, 'webdriver', {
+                get: () => false,
+            })
+            Object.defineProperty(win.navigator, 'languages', {
+                get: () => ['en-US', 'en'],
+            })
+            Object.defineProperty(win.navigator, 'plugins', {
+                get: () => [1, 2, 3],
+            })
+            win.chrome = win.chrome || {}
+        } catch (e) {
+            // ignore failures — best-effort only
+        }
+
+        if (typeof userOnBeforeLoad === 'function') {
+            userOnBeforeLoad(win)
+        }
+    }
+
+    return originalFn(url, options)
 })
 //
 //
