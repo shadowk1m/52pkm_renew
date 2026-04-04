@@ -32,5 +32,6 @@ describe('52pkm', () => {
     cy.get('.v-alert__content').eq(0).should('contain', '成功')
     cy.get('.v-selection-control-group > .v-row > :nth-child(1) > .py-4').click()
     cy.get('.v-col > .v-btn').click()
+    cy.wait(3000)
   })
 })
