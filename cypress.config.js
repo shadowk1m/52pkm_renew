@@ -3,11 +3,20 @@ const path = require('path')
 module.exports = {
   e2e: {
     setupNodeEvents(on, config) {
+      let logs = []
       on('task', {
         log(message) {
-          console.log(message)
+          logs.push(message)
           return null
         },
+      })
+      on('after:spec', (spec, results) => {
+        if (logs.length > 0) {
+          console.log('\n    --- Test Run Info ---')
+          logs.forEach(msg => console.log(msg))
+          console.log('    ---------------------\n')
+          logs = []
+        }
       })
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.family === 'chromium' && browser.name !== 'electron') {

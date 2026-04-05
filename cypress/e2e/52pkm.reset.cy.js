@@ -46,7 +46,5 @@ describe('52pkm', () => {
         baseUrl = `${url}=`
         tokens.push(token)
     })
-        
-    cy.wait(3000)
   })
 })
