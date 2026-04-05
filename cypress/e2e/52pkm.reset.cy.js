@@ -17,6 +17,7 @@ describe('52pkm', () => {
   after(() => {
     cy.task('log', `    URL: ${baseUrl}`)
     cy.task('log', `    Tokens: ${tokens.join(',')}`)
+    cy.task('saveResults', { baseUrl, tokens })
   })
 
   const emailList = emails ? emails.split(',') : []

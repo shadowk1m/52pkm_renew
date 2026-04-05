@@ -1,7 +1,9 @@
 {
   "scripts": {
     "renew": "cypress run --spec 'cypress/e2e/52pkm.cy.js'",
-    "reset": "cypress run --spec 'cypress/e2e/52pkm.reset.cy.js'"
+    "reset": "cypress run --spec 'cypress/e2e/52pkm.reset.cy.js'",
+    "deploy": "node scripts/deploy.js",
+    "reset:deploy": "npm run reset && npm run deploy"
   },
   "devDependencies": {
     "cypress": "^14.3.2",

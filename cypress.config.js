@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 
 module.exports = {
   e2e: {
@@ -9,6 +10,11 @@ module.exports = {
           logs.push(message)
           return null
         },
+        saveResults({ baseUrl, tokens }) {
+          const resultsPath = path.join(config.projectRoot, 'cypress', 'results.json')
+          fs.writeFileSync(resultsPath, JSON.stringify({ baseUrl, tokens }, null, 2))
+          return null
+        }
       })
       on('after:spec', (spec, results) => {
         if (logs.length > 0) {
