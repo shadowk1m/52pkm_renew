@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "renew": "cypress run --spec 'cypress/e2e/52pkm.cy.js'",
+    "reset": "cypress run --spec 'cypress/e2e/52pkm.reset.cy.js'"
+  },
   "devDependencies": {
     "cypress": "^14.3.2",
     "cypress-each": "^1.14.0"

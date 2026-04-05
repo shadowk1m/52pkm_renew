@@ -3,6 +3,12 @@ const path = require('path')
 module.exports = {
   e2e: {
     setupNodeEvents(on, config) {
+      on('task', {
+        log(message) {
+          console.log(message)
+          return null
+        },
+      })
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.family === 'chromium' && browser.name !== 'electron') {
           launchOptions.args = (launchOptions.args || []).filter(arg => !arg.startsWith('--enable-automation'))

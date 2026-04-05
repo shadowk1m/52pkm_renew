@@ -1,13 +1,7 @@
-name: renew
-
-run-name: Coupon ${{ inputs.coupon }}
+name: reset
 
 on:
   workflow_dispatch:
-    inputs:
-       coupon:
-         required: true
-         type: string
 
 jobs:
   cypress-run:
@@ -20,9 +14,8 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          spec: cypress/e2e/52pkm.cy.js
+          spec: cypress/e2e/52pkm.reset.cy.js
         env:
           CYPRESS_DOMAIN: ${{ vars.DOMAIN }}
           CYPRESS_EMAILS: ${{ vars.emails }}
-          CYPRESS_COUPON: ${{ inputs.coupon }}
           CYPRESS_PASSWORD: ${{ secrets.PASSWORD }}
