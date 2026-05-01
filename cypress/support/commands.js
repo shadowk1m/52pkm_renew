@@ -14,11 +14,17 @@
 // Global anti-automation script patching
 beforeEach(() => {
     // Patch scripts containing disable-devtool MD5
+    // The library function name changes between builds (was rx, now Fx, etc.)
+    // so we match the MD5 hash and replace the entire call with a no-op
     cy.intercept('**/js/*.js', (req) => {
         req.continue((res) => {
             if (res.body.includes('321ef380c7d0f29b92e0b1c9c4cf2eb8')) {
-                // Disable the rx(...) call by replacing it with a dummy
-                res.body = res.body.replace(/rx\(\{md5:"321ef380c7d0f29b92e0b1c9c4cf2eb8"/g, '(() => ({success: true}))({md5:"patched"')
+                // Replace the disable-devtool initialization call with a no-op
+                // Match: FunctionName({md5:"hash",...}).success
+                res.body = res.body.replace(
+                    /\w+\(\{md5:"321ef380c7d0f29b92e0b1c9c4cf2eb8".*?\}\)\.success/g,
+                    '({success:true}).success'
+                )
             }
         })
     })
@@ -30,8 +36,8 @@ Cypress.Commands.add('visitAndWait', (url, wait=300) => {
 })
 
 Cypress.Commands.add('login', (email, password, wait=2000) => { 
-    cy.get('#input-1', { timeout: 10000 }).should('be.visible').type(email)
-    cy.get('#input-3', { timeout: 10000 }).should('be.visible').type(password)
+    cy.get('#input-0', { timeout: 10000 }).should('be.visible').type(email)
+    cy.get('#input-2', { timeout: 10000 }).should('be.visible').type(password)
     cy.get('button[type=submit]').click()
     cy.wait(wait)
 })
@@ -52,6 +58,11 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options = {}) => {
     const userOnBeforeLoad = options.onBeforeLoad
     options.onBeforeLoad = (win) => {
         try {
+            // Bypass disable-devtool: its ignore config is () => window.self !== window.top
+            // Making window.self !== window.top causes all detection to be skipped.
+            // Cypress already runs in an iframe so this is naturally true, but reinforce it.
+            Object.defineProperty(win, 'self', { get: () => null, configurable: true })
+
             // Spoof navigator.webdriver
             Object.defineProperty(win.navigator, 'webdriver', {
                 get: () => false,
